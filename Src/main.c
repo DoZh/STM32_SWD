@@ -77,8 +77,8 @@ uint8_t lineReset[8]={0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF};
 uint8_t JTAG2SWD[18]={0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0x9E,0xE7,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0x00};  //LSB
 uint8_t Cache[18];
 //uint8_t readIDCode[6]={0xA5,0x00,0x00,0x00,0x00,0x00};  //MSB
-uint8_t readIDCode[6]={0xA5,0x00,0x00,0x00,0x00,0x00};  //LSB
-uint8_t readContent[6];
+uint8_t readIDCode[7]={0xA5,0x00,0x00,0x00,0x00,0x00};  //LSB
+uint8_t readContent[7];
 
 /* USER CODE END 0 */
 
@@ -116,7 +116,7 @@ int main(void)
 
 	HAL_SPI_TransmitReceive(&hspi1, JTAG2SWD, Cache, 18, 100);
 	//HAL_SPI_TransmitReceive(&hspi1, readIDCode, readContent, 6, 100);
-	HAL_SPI_TransmitReceive(&hspi1, readIDCode, readContent, 6, 100);
+	HAL_SPI_TransmitReceive(&hspi1, readIDCode, readContent, 7, 100);
 
 
   /* USER CODE END 2 */
@@ -164,7 +164,7 @@ void SystemClock_Config(void)
   RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
   RCC_OscInitStruct.PLL.PLLM = 12;
   RCC_OscInitStruct.PLL.PLLN = 168;
-  RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV4;
+  RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
   RCC_OscInitStruct.PLL.PLLQ = 4;
   if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
   {
@@ -180,7 +180,7 @@ void SystemClock_Config(void)
   RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2;
   RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
 
-  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_1) != HAL_OK)
+  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2) != HAL_OK)
   {
     _Error_Handler(__FILE__, __LINE__);
   }

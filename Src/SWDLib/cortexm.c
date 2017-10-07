@@ -261,6 +261,7 @@ bool cortexm_probe(ADIv5_AP_t *ap)
 	PROBE(stm32f1_probe);
 	PROBE(stm32f4_probe);
 	PROBE(stm32l0_probe);   /* STM32L0xx & STM32L1xx */
+	/*
 	PROBE(stm32l4_probe);
 	PROBE(lpc11xx_probe);
 	PROBE(lpc15xx_probe);
@@ -272,6 +273,7 @@ bool cortexm_probe(ADIv5_AP_t *ap)
 	PROBE(lmi_probe);
 	PROBE(kinetis_probe);
 	PROBE(efm32_probe);
+	*/
 #undef PROBE
 
 	return true;
@@ -882,7 +884,7 @@ static int cortexm_hostio_request(target *t)
 			{
 				ret = STDIN_FILENO;
 			}
-			else 				
+			else
 			{
 				if (pflag & TARGET_O_TRUNC)
 				{
@@ -953,4 +955,3 @@ static int cortexm_hostio_request(target *t)
 
 	return t->tc->interrupted;
 }
-

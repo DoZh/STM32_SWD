@@ -30,7 +30,10 @@ void platform_init(int argc, char **argv);
 void platform_init(void);
 #endif
 
-typedef struct platform_timeout platform_timeout;
+//typedef struct platform_timeout platform_timeout;
+typedef struct{
+  uint32_t time;
+} platform_timeout;
 void platform_timeout_set(platform_timeout *t, uint32_t ms);
 bool platform_timeout_is_expired(platform_timeout *t);
 void platform_delay(uint32_t ms);
@@ -44,4 +47,3 @@ void platform_target_set_power(bool power);
 void platform_request_boot(void);
 
 #endif
-

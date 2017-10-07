@@ -18,22 +18,27 @@
  */
 #include "general.h"
 #include "morse.h"
+#include "stm32f4xx_hal.h"
 
-#include <libopencm3/cm3/systick.h>
-#include <libopencm3/cm3/scb.h>
+//typedef platform_timeout uint32_t;
+
+extern __IO uint32_t uwTick;
 
 uint8_t running_status;
 static volatile uint32_t time_ms;
 
 void platform_timing_init(void)
 {
-	/* Setup heartbeat timer */
+	//Already Done with STM32CubeMX System Init Sequence.
+	/*
+	// Setup heartbeat timer 
 	systick_set_clocksource(STK_CSR_CLKSOURCE_AHB_DIV8);
-	systick_set_reload(900000);	/* Interrupt us at 10 Hz */
+	systick_set_reload(900000);	// Interrupt us at 10 Hz 
 	SCB_SHPR(11) &= ~((15 << 4) & 0xff);
 	SCB_SHPR(11) |= ((14 << 4) & 0xff);
 	systick_interrupt_enable();
 	systick_counter_enable();
+	*/
 }
 
 void platform_delay(uint32_t ms)
@@ -45,16 +50,19 @@ void platform_delay(uint32_t ms)
 
 void sys_tick_handler(void)
 {
+	/*
 	if(running_status)
 		gpio_toggle(LED_PORT, LED_IDLE_RUN);
 
 	time_ms += 100;
 
 	SET_ERROR_STATE(morse_update());
+	*/
+	//Should In SysTick_Handler at stm32f4xx_it.c
 }
 
 uint32_t platform_time_ms(void)
 {
-	return time_ms;
+	return uwTick;
 }
 

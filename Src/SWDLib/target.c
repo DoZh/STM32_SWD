@@ -23,6 +23,8 @@
 #include "target_internal.h"
 
 #include <stdarg.h>
+#include <stdio.h>
+
 
 #define ssize_t int32_t
 

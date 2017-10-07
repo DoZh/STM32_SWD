@@ -59,10 +59,10 @@
 #define TMS_PORT	JTAG_PORT
 #define TCK_PORT	JTAG_PORT
 #define TDO_PORT	GPIOC
-#define TDI_PIN		GPIO2
-#define TMS_PIN		GPIO4
-#define TCK_PIN		GPIO5
-#define TDO_PIN		GPIO6
+#define TDI_PIN		GPIO_PIN_2
+#define TMS_PIN		GPIO_PIN_4
+#define TCK_PIN		GPIO_PIN_5
+#define TDO_PIN		GPIO_PIN_6
 
 #define SWDIO_PORT 	JTAG_PORT
 #define SWCLK_PORT 	JTAG_PORT
@@ -70,29 +70,29 @@
 #define SWCLK_PIN	TCK_PIN
 
 #define TRST_PORT	GPIOC
-#define TRST_PIN	GPIO1
+#define TRST_PIN	GPIO_PIN_1
 #define SRST_PORT	GPIOC
-#define SRST_PIN	GPIO8
+#define SRST_PIN	GPIO_PIN_8
 
 #define LED_PORT	GPIOD
 #define LED_PORT_UART	GPIOD
-#define LED_UART	GPIO12
-#define LED_IDLE_RUN	GPIO13
-#define LED_ERROR	GPIO14
-#define LED_BOOTLOADER	GPIO15
+#define LED_UART	GPIO_PIN_12
+#define LED_IDLE_RUN	GPIO_PIN_13
+#define LED_ERROR	GPIO_PIN_14
+#define LED_BOOTLOADER	GPIO_PIN_15
 #define BOOTMAGIC0 0xb007da7a
 #define BOOTMAGIC1 0xbaadfeed
 
 #define TMS_SET_MODE() \
-	gpio_mode_setup(TMS_PORT, GPIO_MODE_OUTPUT, \
-	                GPIO_PUPD_NONE, TMS_PIN);
+	gpio_mode_setup(TMS_PORT, GPIO_MODE_OUTPUT_PP, \
+	                GPIO_NOPULL, TMS_PIN);
 #define SWDIO_MODE_FLOAT() \
 	gpio_mode_setup(SWDIO_PORT, GPIO_MODE_INPUT, \
-	                GPIO_PUPD_NONE, SWDIO_PIN);
+	                GPIO_NOPULL, SWDIO_PIN);
 
 #define SWDIO_MODE_DRIVE() \
-	gpio_mode_setup(SWDIO_PORT, GPIO_MODE_OUTPUT, \
-	                GPIO_PUPD_NONE, SWDIO_PIN);
+	gpio_mode_setup(SWDIO_PORT, GPIO_MODE_OUTPUT_PP, \
+	                GPIO_NOPULL, SWDIO_PIN);
 
 
 #define USB_DRIVER      stm32f107_usb_driver
@@ -154,10 +154,9 @@ static inline int platform_hwversion(void)
 }
 
 /* Use newlib provided integer only stdio functions */
-#define sscanf siscanf
-#define sprintf siprintf
-#define vasprintf vasiprintf
-#define snprintf sniprintf
+//#define sscanf siscanf
+//#define sprintf siprintf
+//#define vasprintf vasiprintf
+//#define snprintf sniprintf
 
 #endif
-

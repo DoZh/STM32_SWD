@@ -61,5 +61,8 @@ static inline uint16_t _gpio_get(GPIO_TypeDef* gpioport, uint16_t gpios)
 #define gpio_get _gpio_get
 #endif
 
+void gpio_mode_setup(GPIO_TypeDef* gpioport, uint8_t mode, uint8_t pull_up_down,
+		     uint16_t gpios);
+
 #endif
 

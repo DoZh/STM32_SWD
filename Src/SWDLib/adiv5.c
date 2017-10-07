@@ -208,7 +208,7 @@ static const struct {
 	{0xfff, aa_end,       cidc_unknown, PIDR_PN_BIT_STRINGS("end", "end")}
 };
 
-extern bool cortexa_probe(ADIv5_AP_t *apb, uint32_t debug_base);
+//extern bool cortexa_probe(ADIv5_AP_t *apb, uint32_t debug_base);
 
 void adiv5_dp_ref(ADIv5_DP_t *dp)
 {
@@ -336,7 +336,7 @@ static void adiv5_component_probe(ADIv5_AP_t *ap, uint32_t addr)
 					break;
 				case aa_cortexa:
 					DEBUG("-> cortexa_probe\n");
-					cortexa_probe(ap, addr);
+					//cortexa_probe(ap, addr);
 					break;
 				default:
 					break;
@@ -438,8 +438,8 @@ void adiv5_dp_init(ADIv5_DP_t *dp)
 		if (ap == NULL)
 			continue;
 
-		extern void kinetis_mdm_probe(ADIv5_AP_t *);
-		kinetis_mdm_probe(ap);
+		//extern void kinetis_mdm_probe(ADIv5_AP_t *);
+		//kinetis_mdm_probe(ap);
 
 		if (ap->base == 0xffffffff) {
 			/* No debug entries... useless AP */

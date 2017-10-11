@@ -43,6 +43,7 @@ static void swdptap_turnaround(uint8_t dir)
 	if(dir)
 		SWDIO_MODE_FLOAT();
 	gpio_set(SWCLK_PORT, SWCLK_PIN);
+	platform_delay_us(1);
 	gpio_clear(SWCLK_PORT, SWCLK_PIN);
 	if(!dir)
 		SWDIO_MODE_DRIVE();
@@ -56,6 +57,7 @@ bool swdptap_bit_in(void)
 
 	ret = gpio_get(SWDIO_PORT, SWDIO_PIN);
 	gpio_set(SWCLK_PORT, SWCLK_PIN);
+	platform_delay_us(1);
 	gpio_clear(SWCLK_PORT, SWCLK_PIN);
 
 #ifdef DEBUG_SWD_BITS
@@ -75,6 +77,6 @@ void swdptap_bit_out(bool val)
 
 	gpio_set_val(SWDIO_PORT, SWDIO_PIN, val);
 	gpio_set(SWCLK_PORT, SWCLK_PIN);
+	platform_delay_us(1);
 	gpio_clear(SWCLK_PORT, SWCLK_PIN);
 }
-

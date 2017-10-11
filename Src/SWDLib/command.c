@@ -40,10 +40,7 @@ struct command_s {
 	const char *help;
 };
 
-
-
-
-static bool cmd_swdp_scan(void);
+//static bool cmd_swdp_scan(void);
 static bool cmd_targets(void);
 
 static bool cmd_connect_srst(target *t, int argc, const char **argv);
@@ -74,10 +71,6 @@ static bool connect_assert_srst;
 #ifdef PLATFORM_HAS_DEBUG
 bool debug_bmp;
 #endif
-
-
-
-
 
 
 bool cmd_swdp_scan(void)

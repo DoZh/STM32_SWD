@@ -21,9 +21,14 @@
 #ifndef __COMMAND_H
 #define __COMMAND_H
 
+#include "stdbool.h"
 #include "target.h"
 
 int command_process(target *t, char *cmd);
+
+bool cmd_swdp_scan(void);
+
+
 
 #endif
 

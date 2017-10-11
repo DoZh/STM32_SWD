@@ -31,9 +31,9 @@ void platform_timing_init(void)
 {
 	//Already Done with STM32CubeMX System Init Sequence.
 	/*
-	// Setup heartbeat timer 
+	// Setup heartbeat timer
 	systick_set_clocksource(STK_CSR_CLKSOURCE_AHB_DIV8);
-	systick_set_reload(900000);	// Interrupt us at 10 Hz 
+	systick_set_reload(900000);	// Interrupt us at 10 Hz
 	SCB_SHPR(11) &= ~((15 << 4) & 0xff);
 	SCB_SHPR(11) |= ((14 << 4) & 0xff);
 	systick_interrupt_enable();
@@ -46,6 +46,17 @@ void platform_delay(uint32_t ms)
 	platform_timeout timeout;
 	platform_timeout_set(&timeout, ms);
 	while (!platform_timeout_is_expired(&timeout));
+}
+
+void platform_delay_us(uint32_t us)
+{
+	for(uint32_t i=0; i < us; i++)
+	{
+		__nop();
+		__nop();
+		__nop();
+		__nop();
+	}
 }
 
 void sys_tick_handler(void)
@@ -65,4 +76,3 @@ uint32_t platform_time_ms(void)
 {
 	return uwTick;
 }
-

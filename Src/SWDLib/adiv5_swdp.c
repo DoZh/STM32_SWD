@@ -38,7 +38,7 @@ static uint32_t adiv5_swdp_read(ADIv5_DP_t *dp, uint16_t addr);
 
 static uint32_t adiv5_swdp_error(ADIv5_DP_t *dp);
 
-static uint32_t adiv5_swdp_low_access(ADIv5_DP_t *dp, uint8_t RnW,
+uint32_t adiv5_swdp_low_access(ADIv5_DP_t *dp, uint8_t RnW,
 				      uint16_t addr, uint32_t value);
 
 static void adiv5_swdp_abort(ADIv5_DP_t *dp, uint32_t abort);
@@ -117,21 +117,22 @@ static uint32_t adiv5_swdp_error(ADIv5_DP_t *dp)
 	return err;
 }
 
-static uint32_t adiv5_swdp_low_access(ADIv5_DP_t *dp, uint8_t RnW,
+uint32_t adiv5_swdp_low_access(ADIv5_DP_t *dp, uint8_t RnW,
 				      uint16_t addr, uint32_t value)
 {
+	putchar('!');
 	bool APnDP = addr & ADIV5_APnDP;
 	addr &= 0xff;
 	uint8_t request = 0x81;
 	uint32_t response = 0;
 	uint8_t ack;
 	platform_timeout timeout;
-
-	if(APnDP && dp->fault) return 0;
+	putchar('^');
+	//if(APnDP && dp->fault) {putchar('%');return 0;}
 
 	if(APnDP) request ^= 0x22;
 	if(RnW)   request ^= 0x24;
-
+	putchar('*');
 	addr &= 0xC;
 	request |= (addr << 1) & 0x18;
 	if((addr == 4) || (addr == 8))
@@ -148,6 +149,7 @@ static uint32_t adiv5_swdp_low_access(ADIv5_DP_t *dp, uint8_t RnW,
 
 	if(ack == SWDP_ACK_FAULT) {
 		dp->fault = 1;
+		putchar('#');
 		return 0;
 	}
 
@@ -163,7 +165,7 @@ static uint32_t adiv5_swdp_low_access(ADIv5_DP_t *dp, uint8_t RnW,
 
 	/* REMOVE THIS */
 	swdptap_seq_out(0, 8);
-
+	putchar('@');
 	return response;
 }
 
@@ -171,4 +173,3 @@ static void adiv5_swdp_abort(ADIv5_DP_t *dp, uint32_t abort)
 {
 	adiv5_dp_write(dp, ADIV5_DP_ABORT, abort);
 }
-

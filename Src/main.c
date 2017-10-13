@@ -39,6 +39,7 @@
 #include "main.h"
 #include "stm32f4xx_hal.h"
 #include "command.h"
+#include "target_internal.h"
 
 /* USER CODE BEGIN Includes */
 
@@ -54,7 +55,10 @@ UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
 /* Private variables ---------------------------------------------------------*/
+extern target *target_list;
 
+extern void stm32f4_flash_unlock(target *t);
+extern int stm32f4_flash_write(struct target_flash *f, target_addr dest, const void *src, size_t len);
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -67,7 +71,7 @@ static void MX_USART1_UART_Init(void);
 
 /* USER CODE BEGIN PFP */
 /* Private function prototypes -----------------------------------------------*/
-char hello[]="Hello,World!\n";
+char hello[]="\n\nHello,World!\n\n";
 /* USER CODE END PFP */
 
 /* USER CODE BEGIN 0 */
@@ -116,11 +120,21 @@ int main(void)
   /* USER CODE BEGIN 2 */
 
 	HAL_SPI_TransmitReceive(&hspi1, JTAG2SWD, Cache, 18, 100);
+
 	//HAL_SPI_TransmitReceive(&hspi1, readIDCode, readContent, 6, 100);
 	HAL_SPI_TransmitReceive(&hspi1, readIDCode, readContent, 7, 100);
 	
 	cmd_swdp_scan();
 
+
+	//stm32f4_cmd_erase_mass(target_list);
+
+	uint32_t testpoint = 0x08006640;
+	uint32_t flash_ptr = 0x08010000;
+	
+	
+	stm32f4_flash_unlock(target_list);
+	stm32f4_flash_write(target_list->flash,0x08000000, (const void *)flash_ptr, 0x0CA0);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -134,11 +148,16 @@ int main(void)
 	//HAL_SPI_TransmitReceive(&hspi1, readIDCode, readContent, 6, 100);
 		HAL_GPIO_WritePin(GPIOA,GPIO_PIN_8,GPIO_PIN_SET);
 		HAL_Delay(1000);
+		
+		HAL_UART_Transmit(&huart1,  (uint8_t *)flash_ptr, 0x10, 1000);
+		
 		HAL_GPIO_WritePin(GPIOA,GPIO_PIN_8,GPIO_PIN_RESET);
 		HAL_Delay(1000);
 		
 		HAL_UART_Transmit(&huart1, (uint8_t *)hello, sizeof(hello), 1000);
+		//HAL_UART_Transmit(&huart1, (uint8_t *)hello, sizeof(hello), 1000);
 		
+
 	}
   /* USER CODE END 3 */
 

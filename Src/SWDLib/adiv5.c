@@ -208,6 +208,9 @@ static const struct {
 	{0xfff, aa_end,       cidc_unknown, PIDR_PN_BIT_STRINGS("end", "end")}
 };
 
+//extern uint32_t adiv5_swdp_low_access(ADIv5_DP_t *dp, uint8_t RnW,
+//				      uint16_t addr, uint32_t value);
+
 //extern bool cortexa_probe(ADIv5_AP_t *apb, uint32_t debug_base);
 
 void adiv5_dp_ref(ADIv5_DP_t *dp)
@@ -236,7 +239,8 @@ void adiv5_ap_unref(ADIv5_AP_t *ap)
 
 void adiv5_dp_write(ADIv5_DP_t *dp, uint16_t addr, uint32_t value)
 {
-	dp->low_access(dp, ADIV5_LOW_WRITE, addr, value);
+	//dp->low_access(dp, ADIV5_LOW_WRITE, addr, value);
+	adiv5_swdp_low_access(dp, ADIV5_LOW_WRITE, addr, value);
 }
 
 static uint32_t adiv5_mem_read32(ADIv5_AP_t *ap, uint32_t addr)
@@ -570,9 +574,12 @@ adiv5_mem_write(ADIv5_AP_t *ap, uint32_t dest, const void *src, size_t len)
 
 void adiv5_ap_write(ADIv5_AP_t *ap, uint16_t addr, uint32_t value)
 {
+	putchar('A');
 	adiv5_dp_write(ap->dp, ADIV5_DP_SELECT,
 			((uint32_t)ap->apsel << 24)|(addr & 0xF0));
+	putchar('B');
 	adiv5_dp_write(ap->dp, addr, value);
+	
 }
 
 uint32_t adiv5_ap_read(ADIv5_AP_t *ap, uint16_t addr)

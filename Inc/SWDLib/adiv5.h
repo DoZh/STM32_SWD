@@ -21,7 +21,7 @@
 #ifndef __ADIV5_H
 #define __ADIV5_H
 
-#include "jtag_scan.h"
+#include "stdint.h"
 
 #define ADIV5_APnDP       0x100
 #define ADIV5_DP_REG(x)   (x)
@@ -100,6 +100,26 @@
 #define ADIV5_LOW_WRITE		0
 #define ADIV5_LOW_READ		1
 
+//added to avoid jtag_dev_t missing error
+#pragma anon_unions
+typedef struct jtag_dev_s {
+	union {
+		uint8_t dev;
+		uint8_t dr_prescan;
+	};
+	uint8_t dr_postscan;
+
+	uint8_t ir_len;
+	uint8_t ir_prescan;
+	uint8_t ir_postscan;
+
+	uint32_t idcode;
+	const char *descr;
+
+	uint32_t current_ir;
+
+} jtag_dev_t;
+
 /* Try to keep this somewhat absract for later adding SW-DP */
 typedef struct ADIv5_DP_s {
 	int refcnt;
@@ -118,6 +138,9 @@ typedef struct ADIv5_DP_s {
 	};
 } ADIv5_DP_t;
 
+uint32_t adiv5_swdp_low_access(ADIv5_DP_t *dp, uint8_t RnW,
+				      uint16_t addr, uint32_t value);
+
 static inline uint32_t adiv5_dp_read(ADIv5_DP_t *dp, uint16_t addr)
 {
 	return dp->dp_read(dp, addr);
@@ -131,7 +154,8 @@ static inline uint32_t adiv5_dp_error(ADIv5_DP_t *dp)
 static inline uint32_t adiv5_dp_low_access(struct ADIv5_DP_s *dp, uint8_t RnW,
                                            uint16_t addr, uint32_t value)
 {
-	return dp->low_access(dp, RnW, addr, value);
+	//return dp->low_access(dp, RnW, addr, value);
+	return adiv5_swdp_low_access(dp, RnW, addr, value);
 }
 
 static inline void adiv5_dp_abort(struct ADIv5_DP_s *dp, uint32_t abort)
@@ -170,4 +194,3 @@ void adiv5_mem_read(ADIv5_AP_t *ap, void *dest, uint32_t src, size_t len);
 void adiv5_mem_write(ADIv5_AP_t *ap, uint32_t dest, const void *src, size_t len);
 
 #endif
-

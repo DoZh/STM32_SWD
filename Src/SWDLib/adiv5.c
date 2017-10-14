@@ -239,8 +239,7 @@ void adiv5_ap_unref(ADIv5_AP_t *ap)
 
 void adiv5_dp_write(ADIv5_DP_t *dp, uint16_t addr, uint32_t value)
 {
-	//dp->low_access(dp, ADIV5_LOW_WRITE, addr, value);
-	adiv5_swdp_low_access(dp, ADIV5_LOW_WRITE, addr, value);
+	dp->low_access(dp, ADIV5_LOW_WRITE, addr, value);
 }
 
 static uint32_t adiv5_mem_read32(ADIv5_AP_t *ap, uint32_t addr)

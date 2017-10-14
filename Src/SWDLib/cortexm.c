@@ -180,7 +180,7 @@ static const char tdesc_cortex_mf[] =
 
 ADIv5_AP_t *cortexm_ap(target *t)
 {
-	printf("%p %p\n",(struct cortexm_priv *)t->priv, ((struct cortexm_priv *)t->priv)->ap );
+	//printf("%p %p\n",(struct cortexm_priv *)t->priv, ((struct cortexm_priv *)t->priv)->ap ); //DEBUG USE
 	//printf("%p %p %p\n",(target *) t, (struct cortexm_priv *)t->priv, ((struct cortexm_priv *)t->priv)->ap );
 	return ((struct cortexm_priv *)t->priv)->ap;
 }
@@ -192,8 +192,7 @@ static void cortexm_mem_read(target *t, void *dest, target_addr src, size_t len)
 
 static void cortexm_mem_write(target *t, target_addr dest, const void *src, size_t len)
 {
-	//adiv5_mem_write(cortexm_ap(t), dest, src, len);
-	adiv5_mem_write((ADIv5_AP_t *)0x20000188, dest, src, len); //DEBUG USE
+	adiv5_mem_write(cortexm_ap(t), dest, src, len);
 }
 
 static bool cortexm_check_error(target *t)
@@ -389,15 +388,13 @@ static void cortexm_regs_read(target *t, void *data)
 
 static void cortexm_regs_write(target *t, const void *data)
 {
-	ADIv5_AP_t *ap;
-	//ap = cortexm_ap(t);
-	ap = (ADIv5_AP_t *)0x20000188; //DEBUG USE
+	ADIv5_AP_t *ap = cortexm_ap(t);
 	const uint32_t *regs = data;
 	unsigned i;
-	putchar('&');
+
 	/* FIXME: Describe what's really going on here */
 	adiv5_ap_write(ap, ADIV5_AP_CSW, ap->csw | ADIV5_AP_CSW_SIZE_WORD);
-	putchar('*');
+
 	/* Map the banked data registers (0x10-0x1c) to the
 	 * debug registers DHCSR, DCRSR, DCRDR and DEMCR respectively */
 	adiv5_dp_low_access(ap->dp, ADIV5_LOW_WRITE, ADIV5_AP_TAR, CORTEXM_DHCSR);
@@ -544,9 +541,7 @@ static enum target_halt_reason cortexm_halt_poll(target *t, target_addr *watch)
 
 void cortexm_halt_resume(target *t, bool step)
 {
-	//struct cortexm_priv *priv = t->priv;
-	struct cortexm_priv *priv; //DEBUG USE
-	priv = (struct cortexm_priv *)0x20000220; //DEBUG USE
+	struct cortexm_priv *priv = t->priv;
 	uint32_t dhcsr = CORTEXM_DHCSR_DBGKEY | CORTEXM_DHCSR_C_DEBUGEN;
 
 	if (step)
@@ -629,9 +624,7 @@ static int cortexm_fault_unwind(target *t)
 int cortexm_run_stub(target *t, uint32_t loadaddr,
                      uint32_t r0, uint32_t r1, uint32_t r2, uint32_t r3)
 {
-	//uint32_t regs[t->regs_size / 4];
-	
-	uint32_t regs[t->regs_size];
+	uint32_t regs[t->regs_size / 4];
 
 	memset(regs, 0, sizeof(regs));
 	regs[0] = r0;

@@ -311,8 +311,7 @@ int target_mem_read(target *t, void *dest, target_addr src, size_t len)
 
 int target_mem_write(target *t, target_addr dest, const void *src, size_t len)
 {
-	//t->mem_write(t, dest, src, len);
-	adiv5_mem_write(t, dest, src, len);
+	t->mem_write(t, dest, src, len);
 	return target_check_error(t);
 }
 
@@ -408,10 +407,8 @@ uint32_t target_mem_read32(target *t, uint32_t addr)
 
 void target_mem_write32(target *t, uint32_t addr, uint32_t value)
 {
-	//t->mem_write(t, addr, &value, sizeof(value));  //DEBUG USE
-	adiv5_mem_write(0x20000188, addr, &value, sizeof(value));
+	t->mem_write(t, addr, &value, sizeof(value));
 }
-
 
 uint16_t target_mem_read16(target *t, uint32_t addr)
 {

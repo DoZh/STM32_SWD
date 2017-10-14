@@ -133,8 +133,15 @@ int main(void)
 	uint32_t flash_ptr = 0x08010000;
 	
 	
-	stm32f4_flash_unlock(target_list);
-	stm32f4_flash_write(target_list->flash,0x08000000, (const void *)flash_ptr, 0x0CA0);
+//	stm32f4_flash_unlock(target_list);
+//	stm32f4_flash_write(target_list->flash,0x08000000, (const void *)flash_ptr, 0x0CA0);
+	
+	
+	uint8_t cache[128];
+	//stm32f4_flash_unlock(target_list);
+	//adiv5_mem_write(target_list, cache, 0x20000000, 128);
+//	for(int i=0; i<128; i++)
+//		printf("%02x ", cache[i]);
   /* USER CODE END 2 */
 
   /* Infinite loop */

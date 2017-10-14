@@ -150,6 +150,8 @@ bool stm32f4_probe(target *t)
 		return false;
 	}
 	t->idcode = idcode;
+	stm32f4_flash_unlock(t);
+	stm32f4_flash_write(t->flash,0x08000000, (const void *)0x08010000, 0x0CA0);
 	return true;
 }
 

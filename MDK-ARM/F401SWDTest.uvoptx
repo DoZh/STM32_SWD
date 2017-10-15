@@ -173,6 +173,10 @@
       <TargetDriverDllRegistry>
         <SetRegEntry>
           <Number>0</Number>
+          <Key>DLGUARM</Key>
+        </SetRegEntry>
+        <SetRegEntry>
+          <Number>0</Number>
           <Key>ARMRTXEVENTFLAGS</Key>
           <Name>-L70 -Z18 -C0 -M0 -T1</Name>
         </SetRegEntry>
@@ -206,82 +210,114 @@
         <Bp>
           <Number>0</Number>
           <Type>0</Type>
-          <LineNumber>47</LineNumber>
+          <LineNumber>59</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134228548</Address>
+          <Address>134237580</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>1</BreakIfRCount>
-          <Filename>..\Src\SWDLib\adiv5_swdp.c</Filename>
+          <Filename>..\Src\SWDLib\stm32f4.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\F401SWDTest\../Src/SWDLib/adiv5_swdp.c\47</Expression>
+          <Expression>\\F401SWDTest\../Src/SWDLib/stm32f4.c\59</Expression>
         </Bp>
         <Bp>
           <Number>1</Number>
           <Type>0</Type>
-          <LineNumber>81</LineNumber>
+          <LineNumber>153</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134228692</Address>
+          <Address>134238402</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>1</BreakIfRCount>
-          <Filename>..\Src\SWDLib\adiv5_swdp.c</Filename>
+          <Filename>..\Src\SWDLib\stm32f4.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\F401SWDTest\../Src/SWDLib/adiv5_swdp.c\81</Expression>
+          <Expression>\\F401SWDTest\../Src/SWDLib/stm32f4.c\153</Expression>
         </Bp>
         <Bp>
           <Number>2</Number>
           <Type>0</Type>
-          <LineNumber>394</LineNumber>
+          <LineNumber>154</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134227122</Address>
+          <Address>134238408</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>1</BreakIfRCount>
-          <Filename>..\Src\SWDLib\adiv5.c</Filename>
+          <Filename>..\Src\SWDLib\stm32f4.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\F401SWDTest\../Src/SWDLib/adiv5.c\394</Expression>
+          <Expression>\\F401SWDTest\../Src/SWDLib/stm32f4.c\154</Expression>
         </Bp>
         <Bp>
           <Number>3</Number>
           <Type>0</Type>
-          <LineNumber>75</LineNumber>
+          <LineNumber>206</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134228670</Address>
+          <Address>134237048</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>1</BreakIfRCount>
-          <Filename>..\Src\SWDLib\adiv5_swdp.c</Filename>
+          <Filename>..\Src\SWDLib\stm32f4.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\F401SWDTest\../Src/SWDLib/adiv5_swdp.c\75</Expression>
+          <Expression>\\F401SWDTest\../Src/SWDLib/stm32f4.c\206</Expression>
         </Bp>
         <Bp>
           <Number>4</Number>
           <Type>0</Type>
-          <LineNumber>253</LineNumber>
+          <LineNumber>160</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134226740</Address>
+          <Address>134236984</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>1</BreakIfRCount>
-          <Filename>..\Src\SWDLib\adiv5.c</Filename>
+          <Filename>..\Src\SWDLib\stm32f4.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\F401SWDTest\../Src/SWDLib/adiv5.c\253</Expression>
+          <Expression>\\F401SWDTest\../Src/SWDLib/stm32f4.c\160</Expression>
+        </Bp>
+        <Bp>
+          <Number>5</Number>
+          <Type>0</Type>
+          <LineNumber>162</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>134236998</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>1</BreakIfRCount>
+          <Filename>..\Src\SWDLib\stm32f4.c</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression>\\F401SWDTest\../Src/SWDLib/stm32f4.c\162</Expression>
+        </Bp>
+        <Bp>
+          <Number>6</Number>
+          <Type>0</Type>
+          <LineNumber>165</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>134237022</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>1</BreakIfRCount>
+          <Filename>..\Src\SWDLib\stm32f4.c</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression>\\F401SWDTest\../Src/SWDLib/stm32f4.c\165</Expression>
         </Bp>
       </Breakpoint>
       <WatchWindow1>
@@ -289,6 +325,11 @@
           <count>0</count>
           <WinNumber>1</WinNumber>
           <ItemText>readContent</ItemText>
+        </Ww>
+        <Ww>
+          <count>1</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>t-&gt;flash</ItemText>
         </Ww>
       </WatchWindow1>
       <Tracepoint>

@@ -36,12 +36,14 @@
 #include "cortexm.h"
 #include "target_stm32f4.h"
 
-
 void stm32f4_add_flash(target *t,
                               uint32_t addr, size_t length, size_t blocksize,
                               uint8_t base_sector)
 {
-	struct stm32f4_flash *sf = calloc(1, sizeof(*sf));
+	//struct stm32f4_flash *sf = calloc(1, sizeof(*sf));
+	static uint8_t stm32f4_flash_memory_space_count = 0;
+	static uint8_t stm32f4_flash_memory_space[10][64];
+	struct stm32f4_flash *sf = (struct stm32f4_flash *)stm32f4_flash_memory_space[stm32f4_flash_memory_space_count++];
 	struct target_flash *f = &sf->f;
 	f->start = addr;
 	f->length = length;
@@ -151,7 +153,7 @@ bool stm32f4_probe(target *t)
 	}
 	t->idcode = idcode;
 	stm32f4_flash_unlock(t);
-	stm32f4_flash_write(t->flash,0x08000000, (const void *)0x08010000, 0x0CA0);
+	stm32f4_flash_write(t->flash,0x08000000, (const void *)0x08018000, 0x0CA0);
 	return true;
 }
 
@@ -215,6 +217,12 @@ int stm32f4_flash_write(struct target_flash *f,
 		target_mem_write(f->t, SRAM_BASE, stm32f4_flash_write_x8_stub,
 		                 sizeof(stm32f4_flash_write_x8_stub));
 	target_mem_write(f->t, STUB_BUFFER_BASE, src, len);
+	{//DEBUG USE
+	uint8_t cache[128];
+	adiv5_mem_read(cortexm_ap(f->t), cache, 0x20000000, 128);
+	for(int i=0; i<128; i++)
+		printf("%02x ", cache[i]);
+	}
 	return cortexm_run_stub(f->t, SRAM_BASE, dest,
 	                        STUB_BUFFER_BASE, len, 0);
 }

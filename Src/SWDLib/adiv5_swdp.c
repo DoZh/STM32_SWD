@@ -48,8 +48,9 @@ int adiv5_swdp_scan(void)
 	uint8_t ack;
 
 	target_list_free();
-	ADIv5_DP_t *dp = (void*)calloc(1, sizeof(*dp));
-
+	//ADIv5_DP_t *dp = (void*)calloc(1, sizeof(*dp));
+	static uint8_t dp_memory_space[32];
+	ADIv5_DP_t *dp = (void*)dp_memory_space;
 	swdptap_init();
 
 	/* Switch from JTAG to SWD mode */
@@ -120,19 +121,15 @@ static uint32_t adiv5_swdp_error(ADIv5_DP_t *dp)
 uint32_t adiv5_swdp_low_access(ADIv5_DP_t *dp, uint8_t RnW,
 				      uint16_t addr, uint32_t value)
 {
-	putchar('!');
 	bool APnDP = addr & ADIV5_APnDP;
 	addr &= 0xff;
 	uint8_t request = 0x81;
 	uint32_t response = 0;
 	uint8_t ack;
 	platform_timeout timeout;
-	putchar('^');
-	//if(APnDP && dp->fault) {putchar('%');return 0;}
-
+	if(APnDP && dp->fault) {return 0;}
 	if(APnDP) request ^= 0x22;
 	if(RnW)   request ^= 0x24;
-	putchar('*');
 	addr &= 0xC;
 	request |= (addr << 1) & 0x18;
 	if((addr == 4) || (addr == 8))
@@ -149,7 +146,6 @@ uint32_t adiv5_swdp_low_access(ADIv5_DP_t *dp, uint8_t RnW,
 
 	if(ack == SWDP_ACK_FAULT) {
 		dp->fault = 1;
-		putchar('#');
 		return 0;
 	}
 
@@ -165,7 +161,6 @@ uint32_t adiv5_swdp_low_access(ADIv5_DP_t *dp, uint8_t RnW,
 
 	/* REMOVE THIS */
 	swdptap_seq_out(0, 8);
-	putchar('@');
 	return response;
 }
 

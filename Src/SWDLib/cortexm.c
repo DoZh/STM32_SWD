@@ -213,7 +213,11 @@ bool cortexm_probe(ADIv5_AP_t *ap)
 
 	t = target_new();
 	adiv5_ap_ref(ap);
-	struct cortexm_priv *priv = calloc(1, sizeof(*priv));
+	//struct cortexm_priv *priv = calloc(1, sizeof(*priv));
+	static uint8_t priv_memory_space[64];
+	struct cortexm_priv *priv = (void*)priv_memory_space;
+
+
 	t->priv = priv;
 	t->priv_free = cortexm_priv_free;
 	priv->ap = ap;
@@ -260,9 +264,9 @@ bool cortexm_probe(ADIv5_AP_t *ap)
 #define PROBE(x) \
 	do { if ((x)(t)) return true; else target_check_error(t); } while (0)
 
-	PROBE(stm32f1_probe);
+	//PROBE(stm32f1_probe);
 	PROBE(stm32f4_probe);
-	PROBE(stm32l0_probe);   /* STM32L0xx & STM32L1xx */
+	//PROBE(stm32l0_probe);   /* STM32L0xx & STM32L1xx */
 	/*
 	PROBE(stm32l4_probe);
 	PROBE(lpc11xx_probe);

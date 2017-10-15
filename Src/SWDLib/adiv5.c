@@ -368,7 +368,9 @@ ADIv5_AP_t *adiv5_new_ap(ADIv5_DP_t *dp, uint8_t apsel)
 		return NULL;
 
 	/* It's valid to so create a heap copy */
-	ap = malloc(sizeof(*ap));
+	//ap = malloc(sizeof(*ap));
+	static uint8_t ap_memory_space[32];
+	ap = (ADIv5_AP_t *)ap_memory_space;
 	memcpy(ap, &tmpap, sizeof(*ap));
 	adiv5_dp_ref(dp);
 
@@ -573,12 +575,10 @@ adiv5_mem_write(ADIv5_AP_t *ap, uint32_t dest, const void *src, size_t len)
 
 void adiv5_ap_write(ADIv5_AP_t *ap, uint16_t addr, uint32_t value)
 {
-	putchar('A');
 	adiv5_dp_write(ap->dp, ADIV5_DP_SELECT,
 			((uint32_t)ap->apsel << 24)|(addr & 0xF0));
-	putchar('B');
 	adiv5_dp_write(ap->dp, addr, value);
-	
+
 }
 
 uint32_t adiv5_ap_read(ADIv5_AP_t *ap, uint16_t addr)

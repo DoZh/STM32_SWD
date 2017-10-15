@@ -124,6 +124,11 @@ int main(void)
 	//HAL_SPI_TransmitReceive(&hspi1, readIDCode, readContent, 6, 100);
 	HAL_SPI_TransmitReceive(&hspi1, readIDCode, readContent, 7, 100);
 	
+	//printf("\n\n%d\n\n", sizeof(ADIv5_DP_t));
+//	static uint8_t stm32f4_flash_memory_space_count = 0;
+//	static uint8_t stm32f4_flash_memory_space[10][64];
+//	struct stm32f4_flash *sf = (struct stm32f4_flash *)stm32f4_flash_memory_space[stm32f4_flash_memory_space_count++];
+
 	cmd_swdp_scan();
 
 
@@ -137,7 +142,7 @@ int main(void)
 //	stm32f4_flash_write(target_list->flash,0x08000000, (const void *)flash_ptr, 0x0CA0);
 	
 	
-	uint8_t cache[128];
+	//uint8_t cache[128];
 	//stm32f4_flash_unlock(target_list);
 	//adiv5_mem_write(target_list, cache, 0x20000000, 128);
 //	for(int i=0; i<128; i++)

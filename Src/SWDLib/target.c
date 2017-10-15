@@ -29,10 +29,14 @@
 #define ssize_t int32_t
 
 target *target_list = NULL;
+//uint8_t target_memory_space[128];
+
 
 target *target_new(void)
 {
-	target *t = (void*)calloc(1, sizeof(*t));
+	//target *t = (void*)calloc(1, sizeof(*t));
+	static uint8_t target_memory_space[128];
+	target *t = (void*)target_memory_space;
 	if (target_list) {
 		target *c = target_list;
 		while (c->next)
@@ -96,11 +100,16 @@ void target_list_free(void)
 void target_add_commands(target *t, const struct command_s *cmds, const char *name)
 {
 	struct target_command_s *tc;
+	static uint8_t tc_memory_space_count = 0;
+	static uint8_t tc_memory_space[4][16];
+	//tc = (struct target_command_s *)tc_memory_space[tc_memory_space_count++];
 	if (t->commands) {
 		for (tc = t->commands; tc->next; tc = tc->next);
-		tc = tc->next = malloc(sizeof(*tc));
+		//tc = tc->next = malloc(sizeof(*tc));
+		tc = tc->next = (struct target_command_s *)tc_memory_space[tc_memory_space_count++];
 	} else {
-		t->commands = tc = malloc(sizeof(*tc));
+		//t->commands = tc = malloc(sizeof(*tc));
+		t->commands = tc = (struct target_command_s *)tc_memory_space[tc_memory_space_count++];
 	}
 	tc->specific_name = name;
 	tc->cmds = cmds;
@@ -133,7 +142,10 @@ target *target_attach(target *t, struct target_controller *tc)
 
 void target_add_ram(target *t, target_addr start, uint32_t len)
 {
-	struct target_ram *ram = malloc(sizeof(*ram));
+	//struct target_ram *ram = malloc(sizeof(*ram));
+	static uint8_t target_ram_memory_space_count = 0;
+	static uint8_t target_ram_memory_space[10][16];
+	struct target_ram *ram = (struct target_ram *)target_ram_memory_space[target_ram_memory_space_count++];
 	ram->start = start;
 	ram->length = len;
 	ram->next = t->ram;
@@ -173,7 +185,10 @@ const char *target_mem_map(target *t)
 
 	/* FIXME size buffer */
 	size_t len = 1024;
-	char *tmp = malloc(len);
+	//char *tmp = malloc(len);
+	static uint8_t tmp_memory_space[1024];
+	printf("\n\nPLEASE COUNT\n\n");
+	char *tmp = (char *)tmp_memory_space;
 	size_t i = 0;
 	i = snprintf(&tmp[i], len - i, "<memory-map>");
 	/* Map each defined RAM */
@@ -565,4 +580,3 @@ int tc_system(target *t, target_addr cmd, size_t cmdlen)
 	}
 	return t->tc->system(t->tc, cmd, cmdlen);
 }
-

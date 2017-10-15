@@ -183,7 +183,7 @@
         <SetRegEntry>
           <Number>0</Number>
           <Key>DLGTARM</Key>
-          <Name>(1010=-1,-1,-1,-1,0)(1007=-1,-1,-1,-1,0)(1008=-1,-1,-1,-1,0)(1009=-1,-1,-1,-1,0)(1012=-1,-1,-1,-1,0)</Name>
+          <Name>(1010=-1,-1,-1,-1,0)(1007=-1,-1,-1,-1,0)(1008=-1,-1,-1,-1,0)(1009=-1069,73,-835,611,0)(1012=-1,-1,-1,-1,0)</Name>
         </SetRegEntry>
         <SetRegEntry>
           <Number>0</Number>
@@ -193,7 +193,7 @@
         <SetRegEntry>
           <Number>0</Number>
           <Key>JL2CM3</Key>
-          <Name>-U283826850 -O78 -S2 -ZTIFSpeedSel5000 -A0 -C0 -JU1 -JI127.0.0.1 -JP0 -RST0 -N00("ARM CoreSight SW-DP") -D00(2BA01477) -L00(0) -TO18 -TC10000000 -TP21 -TDS8007 -TDT0 -TDC1F -TIEFFFFFFFF -TIP8 -TB1 -TFE0 -FO15 -FD20000000 -FC1000 -FN1 -FF0STM32F4xx_128.FLM -FS08000000 -FL020000 -FP0($$Device:STM32F401CBUx$CMSIS\Flash\STM32F4xx_128.FLM)</Name>
+          <Name>-U283826850 -O78 -S5 -ZTIFSpeedSel1000 -A0 -C0 -JU1 -JI127.0.0.1 -JP0 -RST0 -N00("ARM CoreSight SW-DP") -D00(2BA01477) -L00(0) -TO18 -TC10000000 -TP21 -TDS8007 -TDT0 -TDC1F -TIEFFFFFFFF -TIP8 -TB1 -TFE0 -FO15 -FD20000000 -FC1000 -FN1 -FF0STM32F4xx_128.FLM -FS08000000 -FL020000 -FP0($$Device:STM32F401CBUx$CMSIS\Flash\STM32F4xx_128.FLM)</Name>
         </SetRegEntry>
         <SetRegEntry>
           <Number>0</Number>
@@ -210,89 +210,137 @@
         <Bp>
           <Number>0</Number>
           <Type>0</Type>
-          <LineNumber>59</LineNumber>
+          <LineNumber>67</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134237580</Address>
+          <Address>134223068</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>1</BreakIfRCount>
-          <Filename>..\Src\SWDLib\stm32f4.c</Filename>
+          <Filename>../Src/stm32f4xx_it.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\F401SWDTest\../Src/SWDLib/stm32f4.c\59</Expression>
+          <Expression>\\F401SWDTest\../Src/stm32f4xx_it.c\67</Expression>
         </Bp>
         <Bp>
           <Number>1</Number>
           <Type>0</Type>
-          <LineNumber>153</LineNumber>
+          <LineNumber>650</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134238402</Address>
+          <Address>134231990</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>1</BreakIfRCount>
-          <Filename>..\Src\SWDLib\stm32f4.c</Filename>
+          <Filename>..\Src\SWDLib\cortexm.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\F401SWDTest\../Src/SWDLib/stm32f4.c\153</Expression>
+          <Expression>\\F401SWDTest\../Src/SWDLib/cortexm.c\650</Expression>
         </Bp>
         <Bp>
           <Number>2</Number>
           <Type>0</Type>
-          <LineNumber>154</LineNumber>
+          <LineNumber>505</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134238408</Address>
+          <Address>134230146</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>1</BreakIfRCount>
-          <Filename>..\Src\SWDLib\stm32f4.c</Filename>
+          <Filename>..\Src\SWDLib\cortexm.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\F401SWDTest\../Src/SWDLib/stm32f4.c\154</Expression>
+          <Expression>\\F401SWDTest\../Src/SWDLib/cortexm.c\505</Expression>
         </Bp>
         <Bp>
           <Number>3</Number>
           <Type>0</Type>
-          <LineNumber>206</LineNumber>
+          <LineNumber>501</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134237048</Address>
+          <Address>134230134</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>1</BreakIfRCount>
-          <Filename>..\Src\SWDLib\stm32f4.c</Filename>
+          <Filename>..\Src\SWDLib\cortexm.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\F401SWDTest\../Src/SWDLib/stm32f4.c\206</Expression>
+          <Expression>\\F401SWDTest\../Src/SWDLib/cortexm.c\501</Expression>
         </Bp>
         <Bp>
           <Number>4</Number>
           <Type>0</Type>
-          <LineNumber>160</LineNumber>
+          <LineNumber>498</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134236984</Address>
+          <Address>134230126</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>1</BreakIfRCount>
-          <Filename>..\Src\SWDLib\stm32f4.c</Filename>
+          <Filename>..\Src\SWDLib\cortexm.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\F401SWDTest\../Src/SWDLib/stm32f4.c\160</Expression>
+          <Expression>\\F401SWDTest\../Src/SWDLib/cortexm.c\498</Expression>
         </Bp>
         <Bp>
           <Number>5</Number>
           <Type>0</Type>
+          <LineNumber>512</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>134230188</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>1</BreakIfRCount>
+          <Filename>..\Src\SWDLib\cortexm.c</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression>\\F401SWDTest\../Src/SWDLib/cortexm.c\512</Expression>
+        </Bp>
+        <Bp>
+          <Number>6</Number>
+          <Type>0</Type>
+          <LineNumber>649</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>134231982</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>1</BreakIfRCount>
+          <Filename>..\Src\SWDLib\cortexm.c</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression>\\F401SWDTest\../Src/SWDLib/cortexm.c\649</Expression>
+        </Bp>
+        <Bp>
+          <Number>7</Number>
+          <Type>0</Type>
+          <LineNumber>630</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>134231884</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>1</BreakIfRCount>
+          <Filename>..\Src\SWDLib\cortexm.c</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression>\\F401SWDTest\../Src/SWDLib/cortexm.c\630</Expression>
+        </Bp>
+        <Bp>
+          <Number>8</Number>
+          <Type>0</Type>
           <LineNumber>162</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134236998</Address>
+          <Address>134234880</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
@@ -304,11 +352,11 @@
           <Expression>\\F401SWDTest\../Src/SWDLib/stm32f4.c\162</Expression>
         </Bp>
         <Bp>
-          <Number>6</Number>
+          <Number>9</Number>
           <Type>0</Type>
-          <LineNumber>165</LineNumber>
+          <LineNumber>167</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134237022</Address>
+          <Address>134234918</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
@@ -317,7 +365,7 @@
           <BreakIfRCount>1</BreakIfRCount>
           <Filename>..\Src\SWDLib\stm32f4.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\F401SWDTest\../Src/SWDLib/stm32f4.c\165</Expression>
+          <Expression>\\F401SWDTest\../Src/SWDLib/stm32f4.c\167</Expression>
         </Bp>
       </Breakpoint>
       <WatchWindow1>
@@ -331,6 +379,11 @@
           <WinNumber>1</WinNumber>
           <ItemText>t-&gt;flash</ItemText>
         </Ww>
+        <Ww>
+          <count>2</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>t-&gt;priv)-</ItemText>
+        </Ww>
       </WatchWindow1>
       <Tracepoint>
         <THDelay>0</THDelay>
@@ -340,7 +393,7 @@
         <periodic>1</periodic>
         <aLwin>1</aLwin>
         <aCover>0</aCover>
-        <aSer1>1</aSer1>
+        <aSer1>0</aSer1>
         <aSer2>0</aSer2>
         <aPa>0</aPa>
         <viewmode>1</viewmode>

@@ -223,6 +223,7 @@ int stm32f4_flash_write(struct target_flash *f,
 	for(int i=0; i<128; i++)
 		printf("%02x ", cache[i]);
 	}
+	printf("\ncall cortexm_run_stub\n");
 	return cortexm_run_stub(f->t, SRAM_BASE, dest,
 	                        STUB_BUFFER_BASE, len, 0);
 }

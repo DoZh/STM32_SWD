@@ -142,9 +142,8 @@ int main(void)
 //	stm32f4_flash_write(target_list->flash,0x08000000, (const void *)flash_ptr, 0x0CA0);
 	
 	
-	//uint8_t cache[128];
-	//stm32f4_flash_unlock(target_list);
-	//adiv5_mem_write(target_list, cache, 0x20000000, 128);
+//	uint8_t cache[128];
+//	adiv5_mem_read(target_list, cache, 0x20000000, 128);
 //	for(int i=0; i<128; i++)
 //		printf("%02x ", cache[i]);
   /* USER CODE END 2 */
@@ -168,7 +167,8 @@ int main(void)
 		
 		HAL_UART_Transmit(&huart1, (uint8_t *)hello, sizeof(hello), 1000);
 		//HAL_UART_Transmit(&huart1, (uint8_t *)hello, sizeof(hello), 1000);
-		
+		while(1)
+			;
 
 	}
   /* USER CODE END 3 */

@@ -207,9 +207,13 @@ const char *target_mem_map(target *t)
 static struct target_flash *flash_for_addr(target *t, uint32_t addr)
 {
 	for (struct target_flash *f = t->flash; f; f = f->next)
-		if ((f->start <= addr) &&
-		    (addr < (f->start + f->length)))
-			return f;
+		if (f->start <= addr) 
+		{
+			uint32_t flashStartAddress = f->start;
+			//divide two var operate due to a strange unaligned problem
+			if(addr < (flashStartAddress + f->length))
+				return f;
+		}
 	return NULL;
 }
 
@@ -233,12 +237,16 @@ int target_flash_write(target *t,
 	while (len) {
 		struct target_flash *f = flash_for_addr(t, dest);
 		size_t tmplen = MIN(len, f->length - (dest % f->length));
-		if (f->align > 1) {
+		if ((f->align > 1) && ((dest % f->align) || (len % f->align))){
+		//if (f->align > 1){  
 			uint32_t offset = dest % f->align;
-			uint8_t data[ALIGN(offset + len, f->align)];
-			memset(data, f->erased, sizeof(data));
+			//uint8_t data[ALIGN(offset + len, f->align)];
+			uint32_t datalen = ALIGN(offset + len, f->align);
+			uint8_t *data = malloc(datalen); 
+			memset(data, f->erased, datalen);
 			memcpy((uint8_t *)data + offset, src, len);
-			ret |= f->write(f, dest - offset, data, sizeof(data));
+			ret |= f->write(f, dest - offset, data, datalen);
+			free(data);
 		} else {
 			ret |= f->write(f, dest, src, tmplen);
 		}

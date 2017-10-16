@@ -152,8 +152,23 @@ bool stm32f4_probe(target *t)
 		return false;
 	}
 	t->idcode = idcode;
+	cortexm_halt_request(t);
+	cortexm_halt_on_reset_request(t);
+	cortexm_reset(t);
 	stm32f4_flash_unlock(t);
-	stm32f4_flash_write(t->flash,0x08000000, (const void *)0x08018000, 0x0CA0);
+	target_flash_erase(t,0x08000000, 0x0CA0);
+	target_flash_write(t,0x08000000, (const void *)0x08010000, 0x0CA0);
+	
+	{//DEBUG USE
+	uint8_t cache[128];
+	adiv5_mem_read(cortexm_ap(t), cache, 0x20000000, 128);
+	for(int i=0; i<128; i++)
+		printf("%02x ", cache[i]);
+	}
+	
+	cortexm_halt_on_reset_clear(t);
+	cortexm_reset(t);
+	
 	return true;
 }
 
@@ -188,8 +203,10 @@ int stm32f4_flash_erase(struct target_flash *f, target_addr addr, size_t len)
 		while(target_mem_read32(t, FLASH_SR) & FLASH_SR_BSY)
 			if(target_check_error(t))
 				return -1;
-
-		len -= f->blocksize;
+		if(len < f->blocksize)   //prevent sub underflow
+			break;
+		else
+			len -= f->blocksize;
 		sector++;
 	}
 
@@ -217,13 +234,7 @@ int stm32f4_flash_write(struct target_flash *f,
 		target_mem_write(f->t, SRAM_BASE, stm32f4_flash_write_x8_stub,
 		                 sizeof(stm32f4_flash_write_x8_stub));
 	target_mem_write(f->t, STUB_BUFFER_BASE, src, len);
-	{//DEBUG USE
-	uint8_t cache[128];
-	adiv5_mem_read(cortexm_ap(f->t), cache, 0x20000000, 128);
-	for(int i=0; i<128; i++)
-		printf("%02x ", cache[i]);
-	}
-	printf("\ncall cortexm_run_stub\n");
+
 	return cortexm_run_stub(f->t, SRAM_BASE, dest,
 	                        STUB_BUFFER_BASE, len, 0);
 }

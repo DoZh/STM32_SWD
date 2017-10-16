@@ -55,9 +55,8 @@ static void cortexm_regs_read(target *t, void *data);
 static void cortexm_regs_write(target *t, const void *data);
 static uint32_t cortexm_pc_read(target *t);
 
-static void cortexm_reset(target *t);
+
 static enum target_halt_reason cortexm_halt_poll(target *t, target_addr *watch);
-static void cortexm_halt_request(target *t);
 static int cortexm_fault_unwind(target *t);
 
 static int cortexm_breakwatch_set(target *t, struct breakwatch *);
@@ -438,7 +437,7 @@ static void cortexm_pc_write(target *t, const uint32_t val)
 
 /* The following three routines implement target halt/resume
  * using the core debug registers in the NVIC. */
-static void cortexm_reset(target *t)
+void cortexm_reset(target *t)
 {
 	if ((t->target_options & CORTEXM_TOPT_INHIBIT_SRST) == 0) {
 		platform_srst_set_val(true);
@@ -467,7 +466,7 @@ static void cortexm_reset(target *t)
 	target_mem_write32(t, CORTEXM_DFSR, CORTEXM_DFSR_RESETALL);
 }
 
-static void cortexm_halt_request(target *t)
+void cortexm_halt_request(target *t)
 {
 	volatile struct exception e;
 	TRY_CATCH (e, EXCEPTION_TIMEOUT) {
@@ -478,6 +477,22 @@ static void cortexm_halt_request(target *t)
 	if (e.type) {
 		tc_printf(t, "Timeout sending interrupt, is target in WFI?\n");
 	}
+}
+
+void cortexm_halt_on_reset_request(target *t)
+{
+	/* Request halt on reset */
+	uint32_t demcr_readvalue = 	target_mem_read32(t, CORTEXM_DEMCR);
+	//printf("\n\n%p\n\n", demcr_readvalue);
+	target_mem_write32(t, CORTEXM_DEMCR, demcr_readvalue | CORTEXM_DEMCR_VC_CORERESET);
+}
+
+void cortexm_halt_on_reset_clear(target *t)
+{
+	/* Clear halt on reset */
+	uint32_t demcr_readvalue = 	target_mem_read32(t, CORTEXM_DEMCR);
+	//printf("\n\n%p\n\n", demcr_readvalue);
+	target_mem_write32(t, CORTEXM_DEMCR, demcr_readvalue & ~(CORTEXM_DEMCR_VC_CORERESET));
 }
 
 static enum target_halt_reason cortexm_halt_poll(target *t, target_addr *watch)

@@ -152,23 +152,6 @@ bool stm32f4_probe(target *t)
 		return false;
 	}
 	t->idcode = idcode;
-	cortexm_halt_request(t);
-	cortexm_halt_on_reset_request(t);
-	cortexm_reset(t);
-	stm32f4_flash_unlock(t);
-	target_flash_erase(t,0x08000000, 0x0CA0);
-	target_flash_write(t,0x08000000, (const void *)0x08010000, 0x0CA0);
-	
-	{//DEBUG USE
-	uint8_t cache[128];
-	adiv5_mem_read(cortexm_ap(t), cache, 0x20000000, 128);
-	for(int i=0; i<128; i++)
-		printf("%02x ", cache[i]);
-	}
-	
-	cortexm_halt_on_reset_clear(t);
-	cortexm_reset(t);
-	
 	return true;
 }
 

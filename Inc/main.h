@@ -46,6 +46,11 @@
 
 /* Private define ------------------------------------------------------------*/
 
+#define SWDIO_Pin GPIO_PIN_4
+#define SWDIO_GPIO_Port GPIOB
+#define SWCLK_Pin GPIO_PIN_5
+#define SWCLK_GPIO_Port GPIOB
+
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */

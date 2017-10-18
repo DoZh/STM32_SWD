@@ -48,7 +48,7 @@ void platform_delay(uint32_t ms)
 	while (!platform_timeout_is_expired(&timeout));
 }
 
-void platform_delay_us(uint32_t us)
+void platform_delay_swd(uint32_t us)
 {
 	for(uint32_t i=0; i < us; i++)
 	{

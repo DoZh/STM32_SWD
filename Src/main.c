@@ -38,12 +38,11 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "stm32f4xx_hal.h"
+
+/* USER CODE BEGIN Includes */
 #include "command.h"
 #include "target_internal.h"
 #include "cortexm.h"
-
-/* USER CODE BEGIN Includes */
-
 /* USER CODE END Includes */
 
 /* Private variables ---------------------------------------------------------*/
@@ -72,7 +71,7 @@ static void MX_USART1_UART_Init(void);
 
 /* USER CODE BEGIN PFP */
 /* Private function prototypes -----------------------------------------------*/
-char hello[]="\n\nHello,World!\n\n";
+char hello[]="\nHello,World!\n";
 /* USER CODE END PFP */
 
 /* USER CODE BEGIN 0 */
@@ -142,12 +141,13 @@ int main(void)
 //	stm32f4_flash_unlock(target_list);
 //	stm32f4_flash_write(target_list->flash,0x08000000, (const void *)flash_ptr, 0x0CA0);
 	
-	cortexm_halt_request(target_list);
-	cortexm_halt_on_reset_request(target_list);
-	cortexm_reset(target_list);
-	stm32f4_flash_unlock(target_list);
-	target_flash_erase(target_list,0x08000000, 0x0CA0);
-	target_flash_write(target_list,0x08000000, (const void *)0x08010000, 0x0CA0);
+//	cortexm_halt_request(target_list);
+//	cortexm_halt_on_reset_request(target_list);
+//	cortexm_reset(target_list);
+//	stm32f4_flash_unlock(target_list);
+
+//	target_flash_erase(target_list,0x08000000, 0x20000);
+//	target_flash_write(target_list,0x08000000, (const void *)0x08010000, 0x0CA0);
 	
 //	{//DEBUG USE
 //	uint8_t cache[128];
@@ -156,8 +156,8 @@ int main(void)
 //		printf("%02x ", cache[i]);
 //	}
 	
-	cortexm_halt_on_reset_clear(target_list);
-	cortexm_reset(target_list);
+//	cortexm_halt_on_reset_clear(target_list);
+//	cortexm_reset(target_list);
 
 
   /* USER CODE END 2 */
@@ -175,7 +175,7 @@ int main(void)
 		HAL_GPIO_WritePin(GPIOA,GPIO_PIN_8,GPIO_PIN_SET);
 		HAL_Delay(1000);
 		
-		HAL_UART_Transmit(&huart1,  (uint8_t *)flash_ptr, 0x10, 1000);
+		//HAL_UART_Transmit(&huart1,  (uint8_t *)flash_ptr, 0x10, 1000);
 		
 		HAL_GPIO_WritePin(GPIOA,GPIO_PIN_8,GPIO_PIN_RESET);
 		HAL_Delay(1000);
@@ -339,7 +339,7 @@ static void MX_GPIO_Init(void)
   HAL_GPIO_WritePin(GPIOA, GPIO_PIN_8|GPIO_PIN_9|GPIO_PIN_10, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_4|GPIO_PIN_5, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOB, SWDIO_Pin|SWCLK_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pins : PA8 PA9 PA10 */
   GPIO_InitStruct.Pin = GPIO_PIN_8|GPIO_PIN_9|GPIO_PIN_10;
@@ -348,12 +348,19 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : PB4 PB5 */
-  GPIO_InitStruct.Pin = GPIO_PIN_4|GPIO_PIN_5;
+  /*Configure GPIO pin : SWDIO_Pin */
+  GPIO_InitStruct.Pin = SWDIO_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
-  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(SWDIO_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : SWCLK_Pin */
+  GPIO_InitStruct.Pin = SWCLK_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_PULLDOWN;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(SWCLK_GPIO_Port, &GPIO_InitStruct);
 
 }
 

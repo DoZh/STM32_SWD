@@ -20,8 +20,13 @@
 
 /* This file implements the low-level SW-DP interface. */
 
+#define SWD_DELAY_PRE 10
+#define SWD_DELAY_POST 10
+
+
 #include "general.h"
 #include "swdptap.h"
+#include "timing_stm32.h"
 
 int swdptap_init(void)
 {
@@ -42,8 +47,9 @@ static void swdptap_turnaround(uint8_t dir)
 
 	if(dir)
 		SWDIO_MODE_FLOAT();
+		platform_delay_swd(10);
 	gpio_set(SWCLK_PORT, SWCLK_PIN);
-	platform_delay_us(1);
+	platform_delay_swd(10);
 	gpio_clear(SWCLK_PORT, SWCLK_PIN);
 	if(!dir)
 		SWDIO_MODE_DRIVE();
@@ -54,10 +60,10 @@ bool swdptap_bit_in(void)
 	uint16_t ret;
 
 	swdptap_turnaround(1);
-
+		platform_delay_swd(10);
 	ret = gpio_get(SWDIO_PORT, SWDIO_PIN);
 	gpio_set(SWCLK_PORT, SWCLK_PIN);
-	platform_delay_us(1);
+	platform_delay_swd(10);
 	gpio_clear(SWCLK_PORT, SWCLK_PIN);
 
 #ifdef DEBUG_SWD_BITS
@@ -76,7 +82,8 @@ void swdptap_bit_out(bool val)
 	swdptap_turnaround(0);
 
 	gpio_set_val(SWDIO_PORT, SWDIO_PIN, val);
+		platform_delay_swd(10);
 	gpio_set(SWCLK_PORT, SWCLK_PIN);
-	platform_delay_us(1);
+	platform_delay_swd(10);
 	gpio_clear(SWCLK_PORT, SWCLK_PIN);
 }

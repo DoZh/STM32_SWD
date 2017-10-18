@@ -31,7 +31,7 @@ extern uint8_t running_status;
 
 void platform_timing_init(void);
 
-void platform_delay_us(uint32_t us);
+void platform_delay_swd(uint32_t us);
 
 #endif
 

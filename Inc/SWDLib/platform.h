@@ -85,14 +85,14 @@
 
 #define TMS_SET_MODE() \
 	gpio_mode_setup(TMS_PORT, GPIO_MODE_OUTPUT_PP, \
-	                GPIO_NOPULL, TMS_PIN);
+	                GPIO_PULLDOWN, TMS_PIN);
 #define SWDIO_MODE_FLOAT() \
 	gpio_mode_setup(SWDIO_PORT, GPIO_MODE_INPUT, \
-	                GPIO_NOPULL, SWDIO_PIN);
+	                GPIO_PULLUP, SWDIO_PIN);
 
 #define SWDIO_MODE_DRIVE() \
 	gpio_mode_setup(SWDIO_PORT, GPIO_MODE_OUTPUT_PP, \
-	                GPIO_NOPULL, SWDIO_PIN);
+	                GPIO_PULLUP, SWDIO_PIN);
 
 
 #define USB_DRIVER      stm32f107_usb_driver

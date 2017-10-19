@@ -19,6 +19,10 @@
 #ifndef __TIMING_STM32_H
 #define __TIMING_STM32_H
 
+
+#define SWD_DELAY_PRE_SAMPLING 0
+#define SWD_DELAY_POST_SAMPLING 0
+
 #include "stdint.h"
 
 struct platform_timeout {

@@ -141,12 +141,12 @@ int main(void)
 //	stm32f4_flash_unlock(target_list);
 //	stm32f4_flash_write(target_list->flash,0x08000000, (const void *)flash_ptr, 0x0CA0);
 	
-//	cortexm_halt_request(target_list);
-//	cortexm_halt_on_reset_request(target_list);
-//	cortexm_reset(target_list);
-//	stm32f4_flash_unlock(target_list);
+	cortexm_halt_request(target_list);
+	cortexm_halt_on_reset_request(target_list);
+	cortexm_reset(target_list);
+	stm32f4_flash_unlock(target_list);
 
-//	target_flash_erase(target_list,0x08000000, 0x20000);
+	target_flash_erase(target_list,0x08000000, 0x20000);
 //	target_flash_write(target_list,0x08000000, (const void *)0x08010000, 0x0CA0);
 	
 //	{//DEBUG USE
@@ -156,8 +156,8 @@ int main(void)
 //		printf("%02x ", cache[i]);
 //	}
 	
-//	cortexm_halt_on_reset_clear(target_list);
-//	cortexm_reset(target_list);
+	cortexm_halt_on_reset_clear(target_list);
+	cortexm_reset(target_list);
 
 
   /* USER CODE END 2 */
@@ -171,6 +171,8 @@ int main(void)
   /* USER CODE BEGIN 3 */
 	//HAL_SPI_TransmitReceive(&hspi1, JTAG2SWD, Cache, 18, 100);
 	//HAL_SPI_TransmitReceive(&hspi1, readIDCode, readContent, 6, 100);
+		HAL_UART_Transmit(&huart1, (uint8_t *)hello, sizeof(hello), 1000);
+		
 		
 		HAL_GPIO_WritePin(GPIOA,GPIO_PIN_8,GPIO_PIN_SET);
 		HAL_Delay(1000);
@@ -180,7 +182,7 @@ int main(void)
 		HAL_GPIO_WritePin(GPIOA,GPIO_PIN_8,GPIO_PIN_RESET);
 		HAL_Delay(1000);
 		
-		HAL_UART_Transmit(&huart1, (uint8_t *)hello, sizeof(hello), 1000);
+		
 
 
 

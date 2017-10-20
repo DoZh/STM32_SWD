@@ -1,7 +1,7 @@
 /**
   ******************************************************************************
-  * File Name          : main.h
-  * Description        : This file contains the common defines of the application
+  * @file           : usbd_storage_if.h
+  * @brief          : header file for the usbd_storage_if.c file
   ******************************************************************************
   * This notice applies to any and all portions of this file
   * that are not between comment pairs USER CODE BEGIN and
@@ -44,30 +44,81 @@
   * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   *
   ******************************************************************************
-  */
+*/
+
 /* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef __MAIN_H
-#define __MAIN_H
-  /* Includes ------------------------------------------------------------------*/
 
-/* USER CODE BEGIN Includes */
+#ifndef __USBD_STORAGE_IF_H_
+#define __USBD_STORAGE_IF_H_
+#ifdef __cplusplus
+ extern "C" {
+#endif
 
-/* USER CODE END Includes */
+/* Includes ------------------------------------------------------------------*/
+#include "usbd_msc.h"
+/* USER CODE BEGIN INCLUDE */
+/* USER CODE END INCLUDE */
 
-/* Private define ------------------------------------------------------------*/
+/** @addtogroup STM32_USB_OTG_DEVICE_LIBRARY
+  * @{
+  */
+  
+/** @defgroup USBD_STORAGE
+  * @brief header file for the USBD_STORAGE.c file
+  * @{
+  */ 
 
-#define SWDIO_Pin GPIO_PIN_4
-#define SWDIO_GPIO_Port GPIOB
-#define SWCLK_Pin GPIO_PIN_5
-#define SWCLK_GPIO_Port GPIOB
+/** @defgroup USBD_STORAGE_Exported_Defines
+  * @{
+  */ 
+/* USER CODE BEGIN EXPORTED_DEFINES */
+/* USER CODE END  EXPORTED_DEFINES */
 
-/* USER CODE BEGIN Private defines */
+/**
+  * @}
+  */ 
 
-/* USER CODE END Private defines */
+/** @defgroup USBD_STORAGE_Exported_Types
+  * @{
+  */  
+/* USER CODE BEGIN EXPORTED_TYPES */
+/* USER CODE END  EXPORTED_TYPES */
 
-void _Error_Handler(char *, int);
+/**
+  * @}
+  */ 
 
-#define Error_Handler() _Error_Handler(__FILE__, __LINE__)
+/** @defgroup USBD_STORAGE_Exported_Macros
+  * @{
+  */ 
+/* USER CODE BEGIN EXPORTED_MACRO */
+/* USER CODE END  EXPORTED_MACRO */
+
+/**
+  * @}
+  */ 
+
+/** @defgroup USBD_STORAGE_Exported_Variables
+  * @{
+  */ 
+  extern USBD_StorageTypeDef  USBD_Storage_Interface_fops_FS;
+
+/* USER CODE BEGIN EXPORTED_VARIABLES */
+/* USER CODE END  EXPORTED_VARIABLES */
+
+/**
+  * @}
+  */ 
+
+/** @defgroup USBD_STORAGE_Exported_FunctionsPrototype
+  * @{
+  */ 
+
+/* USER CODE BEGIN EXPORTED_FUNCTIONS */
+/* USER CODE END  EXPORTED_FUNCTIONS */
+/**
+  * @}
+  */ 
 
 /**
   * @}
@@ -75,7 +126,12 @@ void _Error_Handler(char *, int);
 
 /**
   * @}
-*/ 
+  */ 
+  
+#ifdef __cplusplus
+}
+#endif
 
-#endif /* __MAIN_H */
+#endif /* __USBD_STORAGE_IF_H */
+
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

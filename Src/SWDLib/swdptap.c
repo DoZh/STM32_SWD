@@ -58,6 +58,7 @@ bool swdptap_bit_in(void)
 	uint16_t ret;
 
 	swdptap_turnaround(1);
+	
 	platform_delay_swd(SWD_DELAY_PRE_SAMPLING);
 	ret = gpio_get(SWDIO_PORT, SWDIO_PIN);
 	gpio_set(SWCLK_PORT, SWCLK_PIN);

@@ -1,5 +1,10 @@
 {
     "files.associations": {
-        "stm32f4xx_hal.h": "c"
+        "stm32f4xx_hal.h": "c",
+        "general.h": "c",
+        "stdlib.h": "c",
+        "fatfs.h": "c",
+        "ff.h": "c",
+        "integer.h": "c"
     }
 }

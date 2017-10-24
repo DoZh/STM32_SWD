@@ -45,15 +45,18 @@
         {
             "name": "Win32",
             "includePath": [
-                "C:/Program Files (x86)/Windows Kits/10/Include/10.0.15063.0/um",
-                "C:/Program Files (x86)/Windows Kits/10/Include/10.0.15063.0/ucrt",
-                "C:/Program Files (x86)/Windows Kits/10/Include/10.0.15063.0/shared",
-                "C:/Program Files (x86)/Windows Kits/10/Include/10.0.15063.0/winrt",
+                "D:/Keil_v5/ARM/ARMCC/include",
                 "${workspaceRoot}",
                 "${workspaceRoot}/Inc",
                 "${workspaceRoot}/Drivers/STM32F4xx_HAL_Driver/Inc",
                 "${workspaceRoot}/Drivers/CMSIS/Device/ST/STM32F4xx/Include",
-                "${workspaceRoot}/Inc/SWDLib"
+                "${workspaceRoot}/Inc/SWDLib",
+                "${workspaceRoot}/Drivers/STM32F4xx_HAL_Driver/Inc/Legacy",
+                "${workspaceRoot}/Drivers/CMSIS/Device/ST/STM32F4xx/Include",
+                "${workspaceRoot}/Drivers/CMSIS/Include",
+                "${workspaceRoot}/Middlewares/ST/STM32_USB_Device_Library/Core/Inc",
+                "${workspaceRoot}/Middlewares/ST/STM32_USB_Device_Library/Class/MSC/Inc",
+                "${workspaceRoot}/Middlewares/Third_Party/FatFs/src"
             ],
             "defines": [
                 "_DEBUG",

@@ -150,7 +150,7 @@ int main(void)
 //	static uint8_t stm32f4_flash_memory_space[10][64];
 //	struct stm32f4_flash *sf = (struct stm32f4_flash *)stm32f4_flash_memory_space[stm32f4_flash_memory_space_count++];
 
-	cmd_swdp_scan();
+//	cmd_swdp_scan();
 
 
 	//stm32f4_cmd_erase_mass(target_list);
@@ -162,12 +162,12 @@ int main(void)
 //	stm32f4_flash_unlock(target_list);
 //	stm32f4_flash_write(target_list->flash,0x08000000, (const void *)flash_ptr, 0x0CA0);
 	
-	cortexm_halt_request(target_list);
-	cortexm_halt_on_reset_request(target_list);
-	cortexm_reset(target_list);
-	stm32f4_flash_unlock(target_list);
+//	cortexm_halt_request(target_list);
+//	cortexm_halt_on_reset_request(target_list);
+//	cortexm_reset(target_list);
+//	stm32f4_flash_unlock(target_list);
 
-	target_flash_erase(target_list,0x08000000, 0x20000);
+//	target_flash_erase(target_list,0x08000000, 0x20000);
 //	target_flash_write(target_list,0x08000000, (const void *)0x08010000, 0x0CA0);
 	
 //	{//DEBUG USE
@@ -177,8 +177,8 @@ int main(void)
 //		printf("%02x ", cache[i]);
 //	}
 	
-	cortexm_halt_on_reset_clear(target_list);
-	cortexm_reset(target_list);
+//	cortexm_halt_on_reset_clear(target_list);
+//	cortexm_reset(target_list);
 
 
   /* USER CODE END 2 */

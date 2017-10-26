@@ -74,7 +74,7 @@
   * @{
   */ 
 #define STORAGE_LUN_NBR                  1  
-#define STORAGE_BLK_NBR                  0x50  
+#define STORAGE_BLK_NBR                  0x60  
 #define STORAGE_BLK_SIZ                  0x200
 
 /* USER CODE BEGIN PRIVATE_DEFINES */
@@ -245,7 +245,8 @@ int8_t STORAGE_Read_FS (uint8_t lun,
                         uint16_t blk_len)
 {
   /* USER CODE BEGIN 6 */ 
-	memcpy(buf, (void *)(0x20006000+0x200*blk_addr), 0x200*blk_len);
+	//printf("Read: \nblk_addr = %d\nblk_len = %d\n", blk_addr, blk_len);
+	memcpy(buf, (void *)(0x8004000+0x200*blk_addr), 0x200*blk_len);
   return (USBD_OK);
   /* USER CODE END 6 */ 
 }
@@ -263,7 +264,54 @@ int8_t STORAGE_Write_FS (uint8_t lun,
                          uint16_t blk_len)
 {
   /* USER CODE BEGIN 7 */ 
-	memcpy((void *)(0x20006000+0x200*blk_addr), buf, 0x200*blk_len);
+	FLASH_EraseInitTypeDef FlashEraseStruct;
+	
+	FlashEraseStruct.TypeErase = TYPEERASE_SECTORS;
+	FlashEraseStruct.Banks = FLASH_BANK_1;
+	FlashEraseStruct.NbSectors = 1;
+	FlashEraseStruct.VoltageRange = VOLTAGE_RANGE_3;
+	
+	HAL_FLASH_Unlock();
+	
+	uint8_t flashStartSector = blk_addr / 0x20 + 1;
+	uint8_t flashEndSector = (blk_addr + blk_len - 1) / 0x20 + 1;
+	uint8_t *flashbuff = malloc(0x4000);
+	//static uint8_t flashbuff[0x4000];
+	//printf("Write: \nblk_addr = %d\nblk_len = %d\n", blk_addr, blk_len);
+	uint16_t sectorOffset,bufOffset = 0;
+	uint16_t copyLen;
+	for (uint8_t nowSector = flashStartSector; nowSector <= flashEndSector; nowSector++)
+	{
+		memcpy(flashbuff, (void *)(0x8000000+0x4000*nowSector), 0x4000);
+		
+		if(nowSector == flashStartSector)
+			sectorOffset = (blk_addr - (nowSector - 1) * 0x20) * 0x200;
+		else
+			sectorOffset = 0;
+		if(nowSector == flashEndSector)
+			if(nowSector == flashStartSector)
+				copyLen = blk_len * 0x200;
+			else
+				copyLen = (blk_len + blk_addr) % 0x20 * 0x200;
+		else
+			if(nowSector == flashStartSector)
+				copyLen = (0x20 - blk_addr % 0x20) * 0x200;
+			else
+				copyLen = 0x20 * 0x200;
+		
+		memcpy(flashbuff + sectorOffset, buf + bufOffset, copyLen);
+		bufOffset += copyLen / 0x200;
+			
+		FlashEraseStruct.Sector = nowSector;
+		uint32_t sectorError;
+		HAL_FLASH_Unlock();
+		HAL_FLASHEx_Erase(&FlashEraseStruct, &sectorError);
+		//printf("sectorError = %p\n", sectorError);
+		for(uint32_t progOffset = 0; progOffset < 0x4000; progOffset += 4)
+			HAL_FLASH_Program(TYPEPROGRAM_WORD, 0x8000000 + 0x4000*nowSector + progOffset, *(uint64_t *)(flashbuff + progOffset));
+	}
+	free(flashbuff);
+	HAL_FLASH_Lock();
   return (USBD_OK);
   /* USER CODE END 7 */ 
 }

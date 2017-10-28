@@ -162,6 +162,7 @@ int main(void)
 	FILINFO fwfileinfo;
 	DIR dir;
 	char fwfilepath[16];
+	UINT fwReadByte;
 	
 	res = f_mount(fs, USERPath, 1);
   if (res != FR_OK)
@@ -199,7 +200,6 @@ int main(void)
 							break;
 				}
 			}
-			//sprintf(fwfilepath,"%s%s", USERPath, fwfileinfo.fname);
 			res = f_open(&fwfile, fwfileinfo.fname, FA_READ);
 
 		} else {
@@ -207,33 +207,56 @@ int main(void)
 		}
 		
 		uint8_t cache[128];
-		UINT fwReadByte;
+		do{
 		res = f_read(&fwfile, cache, 128, &fwReadByte);
 		printf("res = %d fwReadByte = %d\n", res, fwReadByte);
+		}while(fwReadByte != 0);
 		for(int i=0; i<128; i++)
 			printf("%02x ", cache[i]);
 
-//	cmd_swdp_scan();
-
-//	cortexm_halt_request(target_list);
-//	cortexm_halt_on_reset_request(target_list);
-//	cortexm_reset(target_list);
-
-//	target_flash_erase(target_list,0x08000000, 0x20000);
-//	target_flash_write(target_list,0x08000000, (const void *)0x08010000, 0x0CA0);
+	cmd_swdp_scan();
 	
-//	{//DEBUG USE
-//	uint8_t cache[128];
-//	adiv5_mem_read(cortexm_ap(target_list), cache, 0x20000000, 128);
-//	for(int i=0; i<128; i++)
-//		printf("%02x ", cache[i]);
-//	}
+	if(target_list != NULL && fwfileinfo.fname[0] != 0)
+	{
+		
+		
+		cortexm_halt_request(target_list);
+		cortexm_halt_on_reset_request(target_list);
+		cortexm_reset(target_list);
+		
+		f_lseek(&fwfile, 0);
+		uint8_t *fwbuff = malloc(0x4000);
+		target_flash_erase(target_list,0x08000000, (fwfileinfo.fsize + 0x3FFF) & ~0x3FFF);
+		uint32_t targetWriteOffset = 0;
+		for(;;)
+		{
+			f_read(&fwfile, fwbuff, 0x4000, &fwReadByte);
+			if(fwReadByte == 0) 
+				break;
+			if((fwReadByte & 0x03) !=0)
+			{
+				uint32_t AlignedByte = ((fwReadByte + 0x03) & ~0x03);
+				for(;fwReadByte < AlignedByte;fwReadByte++)
+					fwbuff[fwReadByte] = 0xFF;
+			}
+			target_flash_write(target_list,0x08000000 + targetWriteOffset, (const void *)fwbuff, fwReadByte);
+			targetWriteOffset += fwReadByte;
+		}
+		free(fwbuff);
+//		{//DEBUG USE
+//		uint8_t cache[128];
+//		adiv5_mem_read(cortexm_ap(target_list), cache, 0x20000000, 128);
+//		for(int i=0; i<128; i++)
+//			printf("%02x ", cache[i]);
+//		}
+		
+		cortexm_halt_on_reset_clear(target_list);
+		cortexm_reset(target_list);
+		printf("Program target device Complete!\n");
+	} else {
+		printf("Connect to target Fail, or can't find bin file.\n");
+	}
 	
-//	cortexm_halt_on_reset_clear(target_list);
-//	cortexm_reset(target_list);
-
-
-
 	f_close(&fwfile);
 	f_closedir(&dir);
   /* USER CODE END 2 */

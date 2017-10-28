@@ -158,10 +158,12 @@ int main(void)
 	FATFS *fs = &USERFatFS;
 	FRESULT res;
 	DWORD fre_clust;	
-	FILINFO fno;
+	FIL fwfile;
+	FILINFO fwfileinfo;
 	DIR dir;
+	char fwfilepath[16];
 	
-	res = f_mount(fs, "", 1);
+	res = f_mount(fs, USERPath, 1);
   if (res != FR_OK)
   {
     printf("FAILED: %d\n",res);
@@ -186,36 +188,36 @@ int main(void)
 	res = f_opendir(&dir, "/");                       /* Open the directory */
 	if (res == FR_OK) {
 		for (;;) {
-				res = f_readdir(&dir, &fno);                   /* Read a directory item */
-				if (res != FR_OK || fno.fname[0] == 0) 
+				res = f_readdir(&dir, &fwfileinfo);                   /* Read a directory item */
+				if (res != FR_OK || fwfileinfo.fname[0] == 0) 
 					break;  /* Break on error or end of dir */
-				if (fno.fattrib & AM_DIR) {                    /* It is a directory */
+				if (fwfileinfo.fattrib & AM_DIR) {                    /* It is a directory */
 					
 				} else {                                       /* It is a file. */
-						printf("%s/%s\n", USERPath, fno.fname);
+						printf("%s%s  %lu Bytes\n", USERPath, fwfileinfo.fname, fwfileinfo.fsize);
+						if(strstr(fwfileinfo.fname, ".BIN") != NULL)
+							break;
 				}
 			}
-			f_closedir(&dir);
+			//sprintf(fwfilepath,"%s%s", USERPath, fwfileinfo.fname);
+			res = f_open(&fwfile, fwfileinfo.fname, FA_READ);
+
 		} else {
 			printf("open path ERROR\n");
 		}
+		
+		uint8_t cache[128];
+		UINT fwReadByte;
+		res = f_read(&fwfile, cache, 128, &fwReadByte);
+		printf("res = %d fwReadByte = %d\n", res, fwReadByte);
+		for(int i=0; i<128; i++)
+			printf("%02x ", cache[i]);
 
 //	cmd_swdp_scan();
 
-
-	//stm32f4_cmd_erase_mass(target_list);
-
-
-	uint32_t flash_ptr = 0x08010000;
-	
-	
-//	stm32f4_flash_unlock(target_list);
-//	stm32f4_flash_write(target_list->flash,0x08000000, (const void *)flash_ptr, 0x0CA0);
-	
 //	cortexm_halt_request(target_list);
 //	cortexm_halt_on_reset_request(target_list);
 //	cortexm_reset(target_list);
-//	stm32f4_flash_unlock(target_list);
 
 //	target_flash_erase(target_list,0x08000000, 0x20000);
 //	target_flash_write(target_list,0x08000000, (const void *)0x08010000, 0x0CA0);
@@ -231,6 +233,9 @@ int main(void)
 //	cortexm_reset(target_list);
 
 
+
+	f_close(&fwfile);
+	f_closedir(&dir);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -258,6 +263,7 @@ int main(void)
 
 
 	}
+
   /* USER CODE END 3 */
 
 }

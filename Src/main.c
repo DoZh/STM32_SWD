@@ -72,8 +72,10 @@ UART_HandleTypeDef huart2;
 /* Private variables ---------------------------------------------------------*/
 extern target *target_list;
 
-extern void stm32f4_flash_unlock(target *t);
-extern int stm32f4_flash_write(struct target_flash *f, target_addr dest, const void *src, size_t len);
+//extern void stm32f4_flash_unlock(target *t);
+//extern int stm32f4_flash_write(struct target_flash *f, target_addr dest, const void *src, size_t len);
+
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -149,6 +151,54 @@ int main(void)
 //	static uint8_t stm32f4_flash_memory_space_count = 0;
 //	static uint8_t stm32f4_flash_memory_space[10][64];
 //	struct stm32f4_flash *sf = (struct stm32f4_flash *)stm32f4_flash_memory_space[stm32f4_flash_memory_space_count++];
+
+
+	//f_mount(&USERFatFS, USERPath, 0);
+
+	FATFS *fs = &USERFatFS;
+	FRESULT res;
+	DWORD fre_clust;	
+	FILINFO fno;
+	DIR dir;
+	
+	res = f_mount(fs, "", 1);
+  if (res != FR_OK)
+  {
+    printf("FAILED: %d\n",res);
+	}
+  else
+		printf("MOUNT OK\n");
+
+	res = f_getfree(USERPath,&fre_clust,&fs);         /* Get Number of Free Clusters */
+	if (res == FR_OK) 
+	{
+	                                             /* Print free space in unit of MB (assuming 512 bytes/sector) */
+        printf("%.1f KB Total Drive Space.\n"
+               "%.1f KB Available Space.\n",
+               ((fs->n_fatent-2)*fs->csize)/2.0,(fre_clust*fs->csize)/2.0);
+	}
+	else
+	{
+		printf("get disk info error\n");
+		printf("error code: %d\n",res);
+	}
+
+	res = f_opendir(&dir, "/");                       /* Open the directory */
+	if (res == FR_OK) {
+		for (;;) {
+				res = f_readdir(&dir, &fno);                   /* Read a directory item */
+				if (res != FR_OK || fno.fname[0] == 0) 
+					break;  /* Break on error or end of dir */
+				if (fno.fattrib & AM_DIR) {                    /* It is a directory */
+					
+				} else {                                       /* It is a file. */
+						printf("%s/%s\n", USERPath, fno.fname);
+				}
+			}
+			f_closedir(&dir);
+		} else {
+			printf("open path ERROR\n");
+		}
 
 //	cmd_swdp_scan();
 

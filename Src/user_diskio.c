@@ -64,8 +64,16 @@
 /* Includes ------------------------------------------------------------------*/
 #include <string.h>
 #include "ff_gen_drv.h"
+#include <stdlib.h>
 
 /* Private typedef -----------------------------------------------------------*/
+
+//#define PAGE_SIZE       0x200
+#define SECTOR_SIZE     0x200
+#define SECTOR_COUNT    0x60
+#define BLOCK_SIZE      0x200
+//#define FLASH_PAGES_PER_SECTOR	SECTOR_SIZE/PAGE_SIZE
+
 /* Private define ------------------------------------------------------------*/
 
 /* Private variables ---------------------------------------------------------*/
@@ -111,7 +119,8 @@ DSTATUS USER_initialize (
 )
 {
   /* USER CODE BEGIN INIT */
-    Stat = STA_NOINIT;
+    //Stat = STA_NOINIT;
+		Stat &= ~STA_NOINIT;
     return Stat;
   /* USER CODE END INIT */
 }
@@ -126,7 +135,8 @@ DSTATUS USER_status (
 )
 {
   /* USER CODE BEGIN STATUS */
-    Stat = STA_NOINIT;
+    //Stat = STA_NOINIT;
+		Stat &= ~STA_NOINIT;
     return Stat;
   /* USER CODE END STATUS */
 }
@@ -147,6 +157,7 @@ DRESULT USER_read (
 )
 {
   /* USER CODE BEGIN READ */
+    memcpy(buff, (void *)(0x8004000+0x200*sector), 0x200*count);
     return RES_OK;
   /* USER CODE END READ */
 }
@@ -169,7 +180,55 @@ DRESULT USER_write (
 { 
   /* USER CODE BEGIN WRITE */
   /* USER CODE HERE */
-    return RES_OK;
+  FLASH_EraseInitTypeDef FlashEraseStruct;
+
+	FlashEraseStruct.TypeErase = TYPEERASE_SECTORS;
+	FlashEraseStruct.Banks = FLASH_BANK_1;
+	FlashEraseStruct.NbSectors = 1;
+	FlashEraseStruct.VoltageRange = VOLTAGE_RANGE_3;
+
+	HAL_FLASH_Unlock();
+
+	uint8_t flashStartSector = sector / 0x20 + 1;
+	uint8_t flashEndSector = (sector + count - 1) / 0x20 + 1;
+	uint8_t *flashbuff = malloc(0x4000);
+	//static uint8_t flashbuff[0x4000];
+	//printf("Write: \nblk_addr = %d\nblk_len = %d\n", blk_addr, blk_len);
+	uint16_t sectorOffset,bufOffset = 0;
+	uint16_t copyLen;
+	for (uint8_t nowSector = flashStartSector; nowSector <= flashEndSector; nowSector++)
+	{
+		memcpy(flashbuff, (void *)(0x8000000+0x4000*nowSector), 0x4000);
+
+		if(nowSector == flashStartSector)
+			sectorOffset = (sector - (nowSector - 1) * 0x20) * 0x200;
+		else
+			sectorOffset = 0;
+		if(nowSector == flashEndSector)
+			if(nowSector == flashStartSector)
+				copyLen = count * 0x200;
+			else
+				copyLen = (count + sector) % 0x20 * 0x200;
+		else
+			if(nowSector == flashStartSector)
+				copyLen = (0x20 - sector % 0x20) * 0x200;
+			else
+				copyLen = 0x20 * 0x200;
+
+		memcpy(flashbuff + sectorOffset, buff + bufOffset, copyLen);
+		bufOffset += copyLen / 0x200;
+
+		FlashEraseStruct.Sector = nowSector;
+		uint32_t sectorError;
+		HAL_FLASH_Unlock();
+		HAL_FLASHEx_Erase(&FlashEraseStruct, &sectorError);
+		//printf("sectorError = %p\n", sectorError);
+		for(uint32_t progOffset = 0; progOffset < 0x4000; progOffset += 4)
+			HAL_FLASH_Program(TYPEPROGRAM_WORD, 0x8000000 + 0x4000*nowSector + progOffset, *(uint64_t *)(flashbuff + progOffset));
+	}
+	free(flashbuff);
+	HAL_FLASH_Lock();
+  return RES_OK;
   /* USER CODE END WRITE */
 }
 #endif /* _USE_WRITE == 1 */
@@ -189,7 +248,33 @@ DRESULT USER_ioctl (
 )
 {
   /* USER CODE BEGIN IOCTL */
-    DRESULT res = RES_ERROR;
+    DRESULT res = RES_OK;
+
+    switch(cmd)
+    {
+      case CTRL_SYNC :
+        break;
+
+      case CTRL_TRIM:
+        break;
+
+      case GET_BLOCK_SIZE:
+        *(DWORD*)buff = BLOCK_SIZE;
+        break;
+
+      case GET_SECTOR_SIZE:
+        *(DWORD*)buff = SECTOR_SIZE;
+        break;
+
+      case GET_SECTOR_COUNT:
+        *(DWORD*)buff = SECTOR_COUNT;
+        break;
+
+      default:
+        res = RES_PARERR;
+        break;
+    }
+
     return res;
   /* USER CODE END IOCTL */
 }

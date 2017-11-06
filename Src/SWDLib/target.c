@@ -187,7 +187,6 @@ const char *target_mem_map(target *t)
 	size_t len = 1024;
 	char *tmp = malloc(len);
 	//static uint8_t tmp_memory_space[1024];
-	printf("\n\nPLEASE COUNT\n\n");
 	//char *tmp = (char *)tmp_memory_space;
 	size_t i = 0;
 	i = snprintf(&tmp[i], len - i, "<memory-map>");

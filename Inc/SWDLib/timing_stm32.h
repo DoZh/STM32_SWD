@@ -20,8 +20,8 @@
 #define __TIMING_STM32_H
 
 
-#define SWD_DELAY_PRE_SAMPLING 0
-#define SWD_DELAY_POST_SAMPLING 0
+#define SWD_DELAY_PRE_SAMPLING 100
+#define SWD_DELAY_POST_SAMPLING 100
 
 #include "stdint.h"
 
